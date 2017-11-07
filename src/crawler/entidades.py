@@ -14,15 +14,13 @@ ENTIDADES_COMPOSTAS = [
     'Tribunal de Contas da União', 'Fundo de Investimentos', 'Justiça Federal'
 ]
 
-# Conector para entidades compostas
-
 
 class Entidades:
     def __init__(self, conector='»'):
+        # Conector para entidades compostas
         self.conector = conector
 
     def parse(self, noticia):
-
         for e in ENTIDADES_COMPOSTAS:
             if e in noticia:
                 noticia = noticia.replace(e, e.replace(' ', self.conector))
@@ -59,7 +57,8 @@ class Entidades:
                 _continue = False
                 continue
 
-            if t[0].isupper() and tokens[i + 1][0].isupper() and self.conector not in t + ' ' + tokens[i + 1]: # Tratar excessão
+            # Tratar exceção
+            if t[0].isupper() and tokens[i + 1][0].isupper() and self.conector not in t + ' ' + tokens[i + 1]:
                 tokens_2.append(t + ' ' + tokens[i + 1])
                 _continue = True
             else:
@@ -92,8 +91,6 @@ class Entidades:
                 entidades.append(e)
 
         return entidades
-
-
 
 
 if __name__ == '__main__':
@@ -142,6 +139,5 @@ Cunha negou que Funaro pagasse contas pessoais suas, mas admitiu que às vezes u
 “A nossa atividade deixa a gente muito desregrado com a nossa vida pessoal, às vezes pagava muita coisa atrasada”, disse.
 '''
 
-ent = Entidades()
-print(ent.parse(noticia))
-
+    ent = Entidades()
+    print(ent.parse(noticia))
