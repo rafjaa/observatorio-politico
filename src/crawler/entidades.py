@@ -85,10 +85,9 @@ class Entidades:
         cont_ent = [(entidades_ok.count(e), e) for e in entidades_ok]
         cont_ent.sort()
 
-        entidades = []
-        for cont, e in reversed(cont_ent):
-            if e not in entidades:
-                entidades.append(e)
+        entidades = {}
+        for c, e in cont_ent:
+            entidades[e] = c
 
         return entidades
 
@@ -140,4 +139,4 @@ Cunha negou que Funaro pagasse contas pessoais suas, mas admitiu que às vezes u
 '''
 
     ent = Entidades()
-    print(ent.parse(noticia))
+    print('\n', ent.parse(noticia), '\n')
