@@ -115,4 +115,4 @@ if __name__ == '__main__':
     crawler(1, 500, 'http://www.politicalivre.com.br/category/brasil/page/%s/', parser_politica_livre, 'links_politica_livre.txt')
 
     # Coleta NoMinuto
-    # crawler(1, 500, 'http://www.nominuto.com/noticias/politica/?page=%s', parser_nominuto, 'links_nominuto.txt')
+    crawler(1, 500, 'http://www.nominuto.com/noticias/politica/?page=%s', parser_nominuto, 'links_nominuto.txt')
