@@ -91,10 +91,13 @@ def crawler(id_inicio, id_fim, url_navegacao, parser, nome_txt):
     for i in range(id_inicio, id_fim + 1):
         print('Página', i)
         
-        coletados = coleta(url_navegacao % i, parser)
-        print(' - ', len(coletados), 'links coletados')
+        try:
+            coletados = coleta(url_navegacao % i, parser)
+            print(' - ', len(coletados), 'links coletados')
 
-        links += coletados
+            links += coletados
+        except:
+            print('Erro na coleta: pulando página')
 
     f = open(PASTA_LINKS + nome_txt, 'w')
     f.write('\n'.join(links))
@@ -115,4 +118,4 @@ if __name__ == '__main__':
     # crawler(1, 500, 'http://www.politicalivre.com.br/category/brasil/page/%s/', parser_politica_livre, 'links_politica_livre.txt')
 
     # Coleta NoMinuto
-    # crawler(1, 500, 'http://www.nominuto.com/noticias/politica/?page=%s', parser_nominuto, 'links_nominuto.txt')
+    crawler(1, 500, 'http://www.nominuto.com/noticias/politica/?page=%s', parser_nominuto, 'links_nominuto.txt')
