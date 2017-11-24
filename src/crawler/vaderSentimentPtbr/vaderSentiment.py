@@ -192,7 +192,7 @@ class SentimentIntensityAnalyzer(object):
     """
     Give a sentiment intensity score to sentences.
     """
-    def __init__(self, lexicon_file="vader_lexicon.txt"):
+    def __init__(self, lexicon_file="vader_lexicon_ptbr.txt"):
         _this_module_file_path_ = abspath(getsourcefile(lambda:0))
         lexicon_full_filepath = join(dirname(_this_module_file_path_), lexicon_file)
         with open(lexicon_full_filepath, encoding='utf-8') as f:

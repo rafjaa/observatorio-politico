@@ -112,7 +112,7 @@ if __name__ == '__main__':
     # crawler(1, 200, 'http://www.otempo.com.br/capa/pol%%C3%%ADtica/%%C3%%BAltimas?page=%s', parser_otempo, 'links_otempo.txt')
 
     # Coleta Política Livre
-    crawler(1, 500, 'http://www.politicalivre.com.br/category/brasil/page/%s/', parser_politica_livre, 'links_politica_livre.txt')
+    # crawler(1, 500, 'http://www.politicalivre.com.br/category/brasil/page/%s/', parser_politica_livre, 'links_politica_livre.txt')
 
     # Coleta NoMinuto
     # crawler(1, 500, 'http://www.nominuto.com/noticias/politica/?page=%s', parser_nominuto, 'links_nominuto.txt')
