@@ -91,10 +91,13 @@ def crawler(id_inicio, id_fim, url_navegacao, parser, nome_txt):
     for i in range(id_inicio, id_fim + 1):
         print('Página', i)
         
-        coletados = coleta(url_navegacao % i, parser)
-        print(' - ', len(coletados), 'links coletados')
+        try:
+            coletados = coleta(url_navegacao % i, parser)
+            print(' - ', len(coletados), 'links coletados')
 
-        links += coletados
+            links += coletados
+        except:
+            print('Erro na coleta: pulando página')
 
     f = open(PASTA_LINKS + nome_txt, 'w')
     f.write('\n'.join(links))
