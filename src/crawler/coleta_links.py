@@ -11,36 +11,31 @@ import requests
 from settings import *
 
 
-def parser_g1(html):
-    soup = BeautifulSoup(html, 'html.parser')
+def parser_g1(soup):
     links = [a['href'] for a in soup.find_all('a', class_='feed-post-link')]
     
     return links
 
 
-def parser_agencia_brasil(html):
-    soup = BeautifulSoup(html, 'html.parser')
+def parser_agencia_brasil(soup):
     links = ['http://agenciabrasil.ebc.com.br' + div.find('a')['href'] for div in soup.find_all('div', class_='titulo-noticia')]
 
     return links
 
 
-def parser_otempo(html):
-    soup = BeautifulSoup(html, 'html.parser')
+def parser_otempo(soup):
     links = ['http://www.otempo.com.br/' + h2.find('a')['href'] for h2 in soup.find_all('h2')]
 
     return links
 
 
-def parser_politica_livre(html):
-    soup = BeautifulSoup(html, 'html.parser')
+def parser_politica_livre(soup):
     links = [h1.find('a')['href'] for h1 in soup.find_all('h1', class_='entry-title')]
 
     return links
 
 
-def parser_nominuto(html):
-    soup = BeautifulSoup(html, 'html.parser')
+def parser_nominuto(soup):    
     links = ['http://www.nominuto.com/' + div.find('a')['href'] for div in soup.find('ul', class_='list').find_all('div', class_='link')]
 
     return links
@@ -53,8 +48,10 @@ def coleta(url, parser):
     '''
     user_agent = random.choice(USER_AGENTS)
     html = requests.get(url, headers={'User-Agent': user_agent}).text
+
+    soup = BeautifulSoup(html, 'html.parser')
     
-    return parser(html)
+    return parser(soup)
 
 
 def crawler(id_inicio, id_fim, url_navegacao, parser, nome_txt):
