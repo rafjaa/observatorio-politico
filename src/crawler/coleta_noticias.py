@@ -1,6 +1,7 @@
 import random
 import re
 
+from dateutil.parser import parse as parse_date
 from bs4 import BeautifulSoup
 import requests
 
@@ -13,6 +14,8 @@ def parser_g1(soup):
     dados['url'] = soup.find('link', rel='canonical')['href']
     dados['titulo'] = soup.find('h1', class_='content-head__title').text
     dados['data'] = soup.find('time')['datetime']
+    dados['data'] = parse_date(dados['data'], fuzzy=True)
+
     dados['texto'] = '\n'.join([p.text for p in soup.find_all('p', class_='content-text__container')])
 
     return dados
@@ -24,6 +27,7 @@ def parser_g1_economia(soup):
     dados['url'] = soup.find('div', class_='share-bar')['data-url']
     dados['titulo'] = soup.find('h1', class_='entry-title').text
     dados['data'] = soup.find('abbr', class_='published').text
+    dados['data'] = parse_date(dados['data'], fuzzy=True)
 
     paragrafos_texto = []
 
@@ -42,6 +46,7 @@ def parser_g1_politica_blog(soup):
     dados['url'] = soup.find('link', rel='canonical')['href']
     dados['titulo'] = soup.find('title').text.strip()
     dados['data'] = soup.find('time')['datetime']
+    dados['data'] = parse_date(dados['data'], fuzzy=True)
 
     paragrafos_texto = []
 
@@ -59,6 +64,7 @@ def parser_agencia_brasil(soup):
     dados['url'] = soup.find('link', rel='canonical')['href']
     dados['titulo'] = soup.find('h1', class_='title').text.strip()
     dados['data'] = soup.find('li', class_='date').text.split('publica')[0]
+    dados['data'] = parse_date(dados['data'], fuzzy=True)
 
     paragrafos_texto = []
 
@@ -76,6 +82,7 @@ def parser_otempo(soup):
     dados['url'] = soup.find('link', rel='canonical')['href']
     dados['titulo'] = soup.find('div', class_='titleNews').text.strip()
     dados['data'] = soup.find('div', class_='published-date').text.split('EM')[1].strip()
+    dados['data'] = parse_date(dados['data'], fuzzy=True)
 
     paragrafos_texto = []
 
@@ -92,7 +99,9 @@ def parser_politica_livre(soup):
 
     dados['url'] = soup.find('link', rel='canonical')['href']
     dados['titulo'] = soup.find('title').text.split('|')[0].strip()
-    dados['data'] = soup.find('p', class_='data').text.split(',')[1].strip()
+    partes_data = soup.find('p', class_='data').text.split(',')[1].strip().replace(' de ', '/').split('/')
+    partes_data[1] = str(MESES[partes_data[1]])
+    dados['data'] = parse_date('/'.join(partes_data), fuzzy=True)
 
     paragrafos_texto = []
 
@@ -109,7 +118,9 @@ def parser_nominuto(soup):
 
     dados['url'] = soup.find('link', rel='canonical')['href']
     dados['titulo'] = soup.find('h1', class_='title').text.strip()
-    dados['data'] = soup.find('time', class_='date')['datetime']
+    dados['data'] = soup.find('time', class_='date')['datetime'].split(' ')[0].replace('-', '/')
+
+    dados['data'] = parse_date(dados['data'], fuzzy=True)
 
     paragrafos_texto = []
 
@@ -175,7 +186,9 @@ if __name__ == '__main__':
     #     parser_politica_livre
     #     ))
     
-    print(obtem_noticia(
-        'http://www.nominuto.com//noticias/politica/trf-2-diz-que-liberacao-de-deputados-precisa-de-aval-de-desembargador/162723/',
-        parser_nominuto
-        ))
+    # print(obtem_noticia(
+    #     'http://www.nominuto.com//noticias/politica/trf-2-diz-que-liberacao-de-deputados-precisa-de-aval-de-desembargador/162723/',
+    #     parser_nominuto
+    #     ))
+
+    pass
