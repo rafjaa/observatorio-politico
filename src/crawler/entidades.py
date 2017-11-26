@@ -57,12 +57,14 @@ class Entidades:
                 _continue = False
                 continue
 
-            # Tratar exceção
-            if t[0].isupper() and tokens[i + 1][0].isupper() and self.conector not in t + ' ' + tokens[i + 1]:
-                tokens_2.append(t + ' ' + tokens[i + 1])
-                _continue = True
-            else:
-                tokens_2.append(t)
+            try:
+                if t[0].isupper() and tokens[i + 1][0].isupper() and self.conector not in t + ' ' + tokens[i + 1]:
+                    tokens_2.append(t + ' ' + tokens[i + 1])
+                    _continue = True
+                else:
+                    tokens_2.append(t)
+            except:
+                pass
 
         # Entidades com inicial maiúscula
         entidades = [t.replace(self.conector, ' ') for t in tokens_2 if t[0].isupper() and len(t) > 1]

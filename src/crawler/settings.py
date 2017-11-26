@@ -1,3 +1,10 @@
+# MongoDB
+IP_BD = 'localhost'
+PORTA_BD = 27017
+NOME_BD = 'observatorio_politico_bd'
+COLECAO_BD = 'noticias'
+
+# Links das notícias
 PASTA_LINKS = './links/'
 
 # Agentes de usuário, via http://useragentstring.com/pages/useragentstring.php
