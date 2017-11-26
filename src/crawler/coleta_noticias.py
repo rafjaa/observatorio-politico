@@ -53,6 +53,80 @@ def parser_g1_politica_blog(soup):
     return dados
 
 
+def parser_agencia_brasil(soup):
+    dados = {}
+
+    dados['url'] = soup.find('link', rel='canonical')['href']
+    dados['titulo'] = soup.find('h1', class_='title').text.strip()
+    dados['data'] = soup.find('li', class_='date').text.split('publica')[0]
+
+    paragrafos_texto = []
+
+    for p in soup.find('div', class_='content').find_all('p'):
+        paragrafos_texto.append(p.text)
+
+    dados['texto'] = '\n'.join(paragrafos_texto)
+
+    return dados
+
+
+def parser_otempo(soup):
+    dados = {}
+
+    dados['url'] = soup.find('link', rel='canonical')['href']
+    dados['titulo'] = soup.find('div', class_='titleNews').text.strip()
+    dados['data'] = soup.find('div', class_='published-date').text.split('EM')[1].strip()
+
+    paragrafos_texto = []
+
+    for p in soup.find('span', class_='texto-artigo').find_all('p'):
+        paragrafos_texto.append(p.text)
+
+    dados['texto'] = '\n'.join(paragrafos_texto)
+
+    return dados
+
+
+def parser_politica_livre(soup):
+    dados = {}
+
+    dados['url'] = soup.find('link', rel='canonical')['href']
+    dados['titulo'] = soup.find('title').text.split('|')[0].strip()
+    dados['data'] = soup.find('p', class_='data').text.split(',')[1].strip()
+
+    paragrafos_texto = []
+
+    for p in soup.find('div', class_='entry-content').find_all('p'):
+        paragrafos_texto.append(p.text)
+
+    dados['texto'] = '\n'.join(paragrafos_texto)
+
+    return dados
+
+
+def parser_nominuto(soup):
+    dados = {}
+
+    dados['url'] = soup.find('link', rel='canonical')['href']
+    dados['titulo'] = soup.find('h1', class_='title').text.strip()
+    dados['data'] = soup.find('time', class_='date')['datetime']
+
+    paragrafos_texto = []
+
+    sec_content = soup.find('section', class_='content')
+
+    for p in sec_content.find_all('p'):
+        paragrafos_texto.append(p.text)
+
+    # Caso só haja um parágrafo, sem tag <p>
+    if '<p' not in sec_content.text:
+        paragrafos_texto.append(sec_content.text)
+
+    dados['texto'] = '\n'.join(paragrafos_texto)
+
+    return dados
+
+
 def obtem_noticia(url, parser):
     user_agent = random.choice(USER_AGENTS)
     html = requests.get(url, headers={'User-Agent': user_agent}).text
@@ -81,10 +155,27 @@ if __name__ == '__main__':
     #     parser_g1_economia
     #     ))
     
-    print(obtem_noticia(
-        'https://g1.globo.com/economia/blog/joao-borges/post/meirelles-agora-ve-possibilidades-concretas-de-aprovacao-da-reforma-da-previdencia.ghtml',
-        parser_g1
-        ))
+    # print(obtem_noticia(
+    #     'https://g1.globo.com/economia/blog/joao-borges/post/meirelles-agora-ve-possibilidades-concretas-de-aprovacao-da-reforma-da-previdencia.ghtml',
+    #     parser_g1
+    #     ))
 
+    # print(obtem_noticia(
+    #     'http://agenciabrasil.ebc.com.br/politica/noticia/2017-11/temer-da-posse-baldy-e-fala-em-parceria-entre-governo-e-congresso',
+    #     parser_agencia_brasil
+    #     ))
+
+    # print(obtem_noticia(
+    #     'http://www.otempo.com.br//capa/pol%C3%ADtica/trf2-decide-que-adriana-ancelmo-deve-voltar-para-pris%C3%A3o-1.1545559',
+    #     parser_otempo
+    #     ))
+
+    # print(obtem_noticia(
+    #     'http://www.politicalivre.com.br/2017/05/termina-em-brasilia-maior-manifestacao-contra-governo-temer/',
+    #     parser_politica_livre
+    #     ))
     
-    
+    print(obtem_noticia(
+        'http://www.nominuto.com//noticias/politica/trf-2-diz-que-liberacao-de-deputados-precisa-de-aval-de-desembargador/162723/',
+        parser_nominuto
+        ))
