@@ -25,3 +25,18 @@ USER_AGENTS = [
     # RockMelt
     'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.24 (KHTML, like Gecko) RockMelt/0.9.58.494 Chrome/11.0.696.71 Safari/534.24'
 ]
+
+MESES = {
+    'janeiro': 1,
+    'fevereiro': 2,
+    'março': 3,
+    'abril': 4,
+    'maio': 5,
+    'junho': 6,
+    'julho': 7,
+    'agosto': 8,
+    'setembro': 9,
+    'outubro': 10,
+    'novembro': 11,
+    'dezembro': 12
+}
