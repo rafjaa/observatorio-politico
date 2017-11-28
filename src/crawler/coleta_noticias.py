@@ -200,5 +200,5 @@ if __name__ == '__main__':
 
     print(noticias.count(), 'notícias persistidas')    
 
-    links = [l.strip() for l in open(PASTA_LINKS + 'links_agencia_brasil.txt')]
-    parallelize(persiste_noticia, links)
+    # links = [l.strip() for l in open(PASTA_LINKS + 'links_nominuto.txt')]
+    # parallelize(persiste_noticia, links)

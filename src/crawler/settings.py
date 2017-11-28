@@ -1,7 +1,7 @@
 # MongoDB
 IP_BD = 'localhost'
 PORTA_BD = 27017
-NOME_BD = 'observatorio_politico_bd'
+NOME_BD = 'tp_2_observatorio_politico'
 COLECAO_BD = 'noticias'
 
 # Links das notícias
