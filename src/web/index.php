@@ -30,6 +30,7 @@ SearcherHTML::addJSDeclarationFile('var words = ' . json_encode($result));
 	</head>
 	<body id="main">
 		<div id="parallax" data-parallax="scroll" data-image-src="template/images/newspapers.jpg">
+			<?php require(__DIR__ . DIRECTORY_SEPARATOR . 'template' . DIRECTORY_SEPARATOR . 'header.php'); ?>
 			<div id="mainsearcher">
 				<div class="container">
 					<div id="searchform">
@@ -48,7 +49,7 @@ SearcherHTML::addJSDeclarationFile('var words = ' . json_encode($result));
 			<div id="tagcloudcontainer">
 				<div class="containertitle">
 					<div class="container">
-						Palavras mais frequentes
+						<a href="tags.php">Palavras mais frequentes</a>
 					</div>
 				</div>
 				<div class="container-fluid">

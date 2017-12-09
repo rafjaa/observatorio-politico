@@ -26,6 +26,13 @@ box-shadow: 0 0 18px 15px rgba(0,0,0,.4);
 text-align: center;
 color: #fff
 }
+.containertitle a {
+text-decoration: none;
+color: #fff
+}
+#parallax {
+padding-top: 60px
+}
 #searchfield {
 cursor: text;
 position: relative;
@@ -76,10 +83,24 @@ height: 400px
 #tagcloud .vertical {
 writing-mode: tb-rl
 }
-.result {
+.result, .tagitem .block {
 background: rgba(235, 239, 201, .8);
 margin: 20px 0;
 padding: 20px
+}
+.tagitem {
+transition: .4s transform
+}
+.tagitem:hover {
+transform: scale(1.05)
+}
+.tagitem, .tagitem:hover, .tagitem:focus {
+text-decoration: none;
+color: #000
+}
+.tagitem .block {
+text-align: center;
+margin: 15px 0
 }
 .result .header {
 padding-bottom: 18px;
@@ -126,6 +147,90 @@ font-family: "Helvetica Neue",Helvetica,Arial,sans-serif
 .paginatorcontainer {
 text-align: center
 }
+.gauge {
+width: 200px;
+padding: 0 40px;
+margin: 0 auto 20px;
+font-size: 10pt
+}
+.gauge canvas {
+width: 200px;
+height: 106px;
+margin: 0 -40px -10px
+}
+#containerfilter {
+padding: 40px 0;
+color: #fff;
+background: rgba(15, 15, 15, .6)
+}
+#containerfilter .btn-primary {
+margin-top: 30px
+}
+#containerfilter h3 {
+margin-bottom: 25px
+}
+#entitiesfilter {
+color: #000;
+font-size: 14pt;
+padding-top: 12px;
+padding-bottom: 14px;
+margin-bottom: 40px
+}
+.irs-grid .irs-grid-text {
+bottom: 6px;
+font-size: 11px
+}
+.irs .irs-from, .irs .irs-to, .irs .irs-single {
+font-size: 11px
+}
+.viewnews {
+margin: 14px 0 0
+}
+#menuheader {
+background: rgba(0,0,0,.9);
+position: fixed;
+z-index: 100;
+top: 0;
+left: 0;
+width: 100%;
+color: #fff
+}
+#menuheader a {
+color: #fff
+}
+#menuheader a:hover, #menuheader a:focus {
+background: rgba(86, 86, 86, .6)
+}
+#menuheader .navbar {
+margin: 0;
+border: 0
+}
+#menuheader .navbar-nav > li > a, #menuheader .navbar-brand {
+padding-top: 20px;
+padding-bottom: 20px
+}
+#menuheader .navbar-brand {
+height: 60px
+}
+#menuheader .navbar-form {
+margin-top: 13px;
+margin-bottom: 13px;
+padding-right: 0
+}
+#menuheader .navbar > .container .navbar-brand {
+margin-left: 0
+}
+#menuheader .navbar-nav .active {
+background: rgba(86, 86, 86, .4)
+}
+#menuheader .navbar-toggle {
+background: #fff;
+margin-top: 13px;
+margin-bottom: 13px
+}
+#menuheader .navbar-toggle .icon-bar {
+background: #000
+}
 
 @media all and ( max-width: 767px ) {
 	#searchform form {
@@ -137,5 +242,15 @@ text-align: center
 	}
 	.result .link {
 		display: none
+	}
+	#containerfilter {
+		padding: 20px 10px 30px
+	}
+	#menuheader .navbar-form {
+		padding-right: 15px
+	}
+	#menuheader .navbar-nav > li > a {
+		padding-top: 15px;
+		padding-bottom: 15px
 	}
 }
