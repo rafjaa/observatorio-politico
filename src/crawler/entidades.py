@@ -1,5 +1,6 @@
 import re
 from string import punctuation
+from vaderSentimentPtbr.vaderSentiment import SentimentIntensityAnalyzer
 
 
 # Entidades compostas, com termos de inicial minúscula
@@ -94,6 +95,49 @@ class Entidades:
         return entidades
 
 
+# Analizadores de entidades e sentimentos
+ent = Entidades()
+analyzer = SentimentIntensityAnalyzer()
+
+
+def entidades_polarizadas(texto):
+    '''
+        Percorre o texto, sentença a sentença, e retorna todas 
+        as entidades encontradas e a polaridade de cada uma.
+    '''
+    sentencas = re.split(r'[.,]', texto)
+
+    # Filtra as sentenças
+    sentencas = [x.replace('\n', ' ').strip() for x in sentencas]
+    sentencas = [x for x in sentencas if x and len(x.split(' ')) > 1]
+
+    entidades = {}
+
+    for s in sentencas:
+        # Entidades da sentença
+        ents = ent.parse(s)
+
+        if ents:
+            # Polaridade da sentença
+            s_score = analyzer.polarity_scores(s)['compound']
+
+            # Para cada entidade da sentença
+            for e in ents:
+                if e not in entidades:
+                    entidades[e] = {'count': 0, 'pos': 0, 'neg': 0, 'neu': 0}
+                
+                entidades[e]['count'] += 1
+                if s_score >= 0.5:
+                    entidades[e]['pos'] += 1
+                elif s_score <= -0.5:
+                    entidades[e]['neg'] += 1
+                else:
+                    entidades[e]['neu'] += 1
+
+    return entidades
+
+
+
 if __name__ == '__main__':
     noticia = '''
 Cunha diz à Justiça que não recebeu dinheiro da JBS para ficar em silêncio
@@ -140,5 +184,6 @@ Cunha negou que Funaro pagasse contas pessoais suas, mas admitiu que às vezes u
 “A nossa atividade deixa a gente muito desregrado com a nossa vida pessoal, às vezes pagava muita coisa atrasada”, disse.
 '''
 
-    ent = Entidades()
-    print('\n', ent.parse(noticia), '\n')
+    ent_pol = entidades_polarizadas(noticia)
+    for e in ent_pol:
+        print(e, ent_pol[e])
