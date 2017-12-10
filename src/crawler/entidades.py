@@ -1,10 +1,31 @@
+import json
 import re
 from string import punctuation
 from vaderSentimentPtbr.vaderSentiment import SentimentIntensityAnalyzer
+from pymongo import MongoClient
 
+from settings import *
+
+
+NAO_ENTIDADES = {
+    'Com', 'Ao', 'Em', 'No', 'Nesta', 'Com', 'Outro', 'Porém', 'Pelas', 'Isso', 'Percebe', 'Parte', 
+    'Também', 'Após', 'Algo', 'Íntegra Leia', 'Pela', 'Foi', 'Será', 'Sei', 'Fiz', 'Vou', 'Leia',
+    'Este', 'Estes', 'Esse', 'Esses', 'Houve', 'Seja', 'Sejam', 'Seriam', 'Serão', 'Têm', 'Tem',
+    'Desse', 'Desses', 'Deste', 'Destes', 'Não', 'Sim', 'Sua', 'Seu', 'Fazr', 'São', 'Toda', 'Todo',
+    'Existem', 'Termos', 'Devem', 'Fico', 'Talvez', 'Estamos', 'Porque', 'Ponto', 'Cerca', 'Nós',
+    'Mudar', 'Duas', 'Uns', 'SAIBA COMO', 'Segundo', 'Segunda', 'Tempo', 'Festa', 'Hoje', 'Alto', 'Logo',
+    'Estimativa', 'Ontem', 'Meus', 'Que', 'Júnior', 'Dessa', 'Desta', 'Atendimento', 'Cidade',
+    'Aquele', 'Aquela', 'ENTENDA COMO', 'Completou', 'Esclareceu', 'Os', 'As', 'Na', 'No', 'Troco',
+    'Garantimos', 'Insatisfeitos'
+}
+
+FRAGMENTO_TOKEN = {
+    'Além', 'Para', 'Também', 'Disse', 'Saiba', 'Um', 'Uma', 'Completou', 'Segundo',
+
+}
 
 # Entidades compostas, com termos de inicial minúscula
-ENTIDADES_COMPOSTAS = [
+ENTIDADES_COMPOSTAS = {
     'Rio de Janeiro', 'Mato Grosso do Sul', 'Rio Grande do Norte', 'Rio Grande do Sul',
     'Câmara dos Deputados', 'Conselho de Justiça Federal', 'Ministério da Agricultura',
     'Ministério da Ciência e Tecnologia', 'Ministério da Cultura', 'Ministério da Fazenda',
@@ -13,7 +34,7 @@ ENTIDADES_COMPOSTAS = [
     'Luiz Inácio Lula da Silva', 'Portal da Saúde', 'Portal de Serviços e Informações',
     'Presidência da República', 'Procuradoria Geral da República', 'Superior Tribunal de Justiça',
     'Tribunal de Contas da União', 'Fundo de Investimentos', 'Justiça Federal'
-]
+}
 
 
 class Entidades:
@@ -90,7 +111,28 @@ class Entidades:
 
         entidades = {}
         for c, e in cont_ent:
-            entidades[e] = c
+            if e.strip('“”') in NAO_ENTIDADES:
+                continue
+
+            pula = False
+            for p in e.split(' '):
+                if len(p) <= 2:
+                    pula = True
+            if pula:
+                continue
+
+            # Remove, por exemplo, "Para Temer"
+            e = ' '.join([x for x in e.split() if x not in FRAGMENTO_TOKEN])
+            
+            # String vazia
+            if not e:
+                continue
+
+            # Dígitos na string
+            if any(x in e for x in '0123456789'):
+                continue
+
+            entidades[e.strip('“”')] = c
 
         return entidades
 
@@ -100,6 +142,8 @@ ent = Entidades()
 analyzer = SentimentIntensityAnalyzer()
 
 
+entidades = {}
+
 def entidades_polarizadas(texto):
     '''
         Percorre o texto, sentença a sentença, e retorna todas 
@@ -108,10 +152,8 @@ def entidades_polarizadas(texto):
     sentencas = re.split(r'[.,]', texto)
 
     # Filtra as sentenças
-    sentencas = [x.replace('\n', ' ').strip() for x in sentencas]
+    sentencas = [x.replace('\n', ' ').strip('“”') for x in sentencas]
     sentencas = [x for x in sentencas if x and len(x.split(' ')) > 1]
-
-    entidades = {}
 
     for s in sentencas:
         # Entidades da sentença
@@ -127,9 +169,9 @@ def entidades_polarizadas(texto):
                     entidades[e] = {'count': 0, 'pos': 0, 'neg': 0, 'neu': 0}
                 
                 entidades[e]['count'] += 1
-                if s_score >= 0.5:
+                if s_score >= 0.3:
                     entidades[e]['pos'] += 1
-                elif s_score <= -0.5:
+                elif s_score <= -0.3:
                     entidades[e]['neg'] += 1
                 else:
                     entidades[e]['neu'] += 1
@@ -184,6 +226,22 @@ Cunha negou que Funaro pagasse contas pessoais suas, mas admitiu que às vezes u
 “A nossa atividade deixa a gente muito desregrado com a nossa vida pessoal, às vezes pagava muita coisa atrasada”, disse.
 '''
 
-    ent_pol = entidades_polarizadas(noticia)
-    for e in ent_pol:
-        print(e, ent_pol[e])
+    # ent_pol = entidades_polarizadas(noticia)
+    # for e in ent_pol:
+    #     print(e, ent_pol[e])
+
+
+    ### Calcula a polaridade de todas as entidades das notícias coletadas
+    cliente = MongoClient(IP_BD, PORTA_BD)
+    banco = cliente[NOME_BD]
+    noticias = banco[COLECAO_BD]
+
+
+    cont = 0
+    for n in noticias.find():
+        conteudo = n['conteudo']
+        entidades_polarizadas(conteudo)
+        cont += 1
+
+
+    json.dump(entidades, open('entidades_polarizadas.json', 'w'))
