@@ -17,14 +17,14 @@ abstract class SearcherHTML {
 		self::$_jsdeclarations[] =& $declaration;
 	}
 
-	static function &getCSSTags() {
+	static function getCSSTags() {
 		$cssfiletags = array();
 		foreach (self::$_cssfiles as &$cssfile)
 			$cssfiletags[] = '<link type="text/css" rel="stylesheet" href="' . $cssfile . '">';
 		return implode("\n", $cssfiletags);
 	}
 
-	static function &getJSTags() {
+	static function getJSTags() {
 		$jsfiletags = array();
 
 		foreach (self::$_jsfiles as &$jsfile)
