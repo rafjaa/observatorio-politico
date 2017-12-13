@@ -16,7 +16,10 @@ NAO_ENTIDADES = {
     'Mudar', 'Duas', 'Uns', 'SAIBA COMO', 'Segundo', 'Segunda', 'Tempo', 'Festa', 'Hoje', 'Alto', 'Logo',
     'Estimativa', 'Ontem', 'Meus', 'Que', 'Júnior', 'Dessa', 'Desta', 'Atendimento', 'Cidade',
     'Aquele', 'Aquela', 'ENTENDA COMO', 'Completou', 'Esclareceu', 'Os', 'As', 'Na', 'No', 'Troco',
-    'Garantimos', 'Insatisfeitos'
+    'Garantimos', 'Insatisfeitos', 'Como', 'Nesse', 'Essa', 'Essas', 'Mas', 'Ainda', 'Setor', 'Daí', 'Dos', 'Num', 'Assim',
+    'Ele', 'Eles', 'Ela', 'Elas', 'Quanto', 'Quando', 'Antes', 'Depois', 'Blog', 'Por', 'Fontes', 'Enquanto',
+    'Quer', 'Até', 'Afinal', 'Então', 'Volta', 'Nos', 'Pelo', 'Pelos', 'Pela', 'Pelas', 'Tão',
+    'Mesmo', 'Aqui', 'Acesse', 'Apesar', 'Neste', 'Único'
 }
 
 FRAGMENTO_TOKEN = {
@@ -149,7 +152,7 @@ def entidades_polarizadas(texto):
         Percorre o texto, sentença a sentença, e retorna todas 
         as entidades encontradas e a polaridade de cada uma.
     '''
-    sentencas = re.split(r'[.,]', texto)
+    sentencas = re.split(r'[.!?\n]', texto)
 
     # Filtra as sentenças
     sentencas = [x.replace('\n', ' ').strip('“”') for x in sentencas]
@@ -169,9 +172,9 @@ def entidades_polarizadas(texto):
                     entidades[e] = {'count': 0, 'pos': 0, 'neg': 0, 'neu': 0}
                 
                 entidades[e]['count'] += 1
-                if s_score >= 0.3:
+                if s_score >= 0.5:
                     entidades[e]['pos'] += 1
-                elif s_score <= -0.3:
+                elif s_score <= -0.5:
                     entidades[e]['neg'] += 1
                 else:
                     entidades[e]['neu'] += 1
@@ -236,12 +239,16 @@ Cunha negou que Funaro pagasse contas pessoais suas, mas admitiu que às vezes u
     banco = cliente[NOME_BD]
     noticias = banco[COLECAO_BD]
 
-
     cont = 0
     for n in noticias.find():
         conteudo = n['conteudo']
         entidades_polarizadas(conteudo)
         cont += 1
+
+    #     if cont > 15:
+    #         break
+    # for e in entidades:
+    #     print(e)
 
 
     json.dump(entidades, open('entidades_polarizadas.json', 'w'))

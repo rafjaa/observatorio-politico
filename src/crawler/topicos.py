@@ -1,8 +1,18 @@
 '''
     Aplica topic modeling para extrair os principais tópicos (assuntos) 
     dos documentos (notícias) coletados.
+
+    Retorno:
+
+    {
+        "2": [
+            [["termo1_t1", peso], ["termo2_t1", peso2], ["termo3_t1", peso3]],
+            [["termo1_t2", peso4], ["termo2_t2", peso5], ["termo3_t2", peso6]],
+        ]
+    }
 '''
 
+import json
 import random
 import nltk
 import numpy as np
@@ -13,12 +23,19 @@ from sklearn.decomposition import NMF
 from pymongo import MongoClient
 from settings import *
 
+# Faixa de tópicos
+FAIXA_TOPICOS = [2, 15]
+FAIXA_TOPICOS[1] += 1
+
+# Quantidade de termos principais por tópico
+NUM_TOP_WORDS = 5
 
 cliente = MongoClient(IP_BD, PORTA_BD)
 banco = cliente[NOME_BD]
 noticias = banco[COLECAO_BD]
 
 stopwords = nltk.corpus.stopwords.words('portuguese')
+stopwords += ['ex', 'disse', ]
 
 # Converte os documentos em lista de strings e embaralha
 documentos = []
@@ -36,33 +53,28 @@ tfidf_vectorizer = TfidfVectorizer(
 tfidf = tfidf_vectorizer.fit_transform(documentos)
 tfidf_feature_names = tfidf_vectorizer.get_feature_names()
 
-# Número de tópicos
-num_topics = 5
 
-# Fatoração da Matriz Não-Negativa (NMF)
-nmf_model = NMF(n_components=num_topics, alpha=.1, l1_ratio=.5, init='nndsvd').fit(tfidf)
+topicos = {}
 
-# Matriz de tópicos x documentos (W)
-nmf_W = nmf_model.transform(tfidf)
+# Itera pela faixa de tópicos que serão precomputados
+for num_topics in range(*FAIXA_TOPICOS):
 
-# Matriz de paralvras x tópicos (H)
-nmf_H = nmf_model.components_
+    print(num_topics, 'tópicos de 15')
 
-# Dimensão das matrizes resultantes
-print('Matriz W:', nmf_W.shape)
-print('Matriz H:', nmf_H.shape, '\n')
+    topicos[str(num_topics)] = []
 
+    # Fatoração da Matriz Não-Negativa (NMF)
+    nmf_model = NMF(n_components=num_topics, alpha=.1, l1_ratio=.5, init='nndsvd').fit(tfidf)
 
-def exibe_topicos(H, W, feature_names, documents, num_top_words):
-    for topic_idx, topic in enumerate(H):
-        print('\nTópico %d' % (topic_idx + 1))
+    # Matriz de tópicos x documentos (W)
+    nmf_W = nmf_model.transform(tfidf)
 
-        print('   Principais termos: ' + ', '.join([feature_names[i] + ' (%s)' % round(H[topic_idx][i], 2) 
-                            for i in topic.argsort()[:-num_top_words - 1:-1]]))       
+    # Matriz de paralvras x tópicos (H)
+    nmf_H = nmf_model.components_  
 
+    for topic_idx, topic in enumerate(nmf_H):
+        topicos[str(num_topics)].append([(tfidf_feature_names[i], round(nmf_H[topic_idx][i], 2)) 
+            for i in topic.argsort()[:-NUM_TOP_WORDS - 1:-1]])
 
 
-# Número de palavras mais relacionadas que serão exibidas para cada tópico
-num_top_words = 5
-
-exibe_topicos(nmf_H, nmf_W, tfidf_feature_names, documentos, num_top_words)
+json.dump(topicos, open('faixa_topicos.json', 'w'))
