@@ -19,8 +19,12 @@ spl_autoload_register(array('SearcherLoader', 'load'));
 define('_SEARCHER', true);
 
 SearcherHTML::addCSSFile('bootstrap.min.css');
+SearcherHTML::addCSSFile('jquery-ui.min.css');
+SearcherHTML::addCSSFile('jquery-ui.theme.min.css');
 SearcherHTML::addCSSFile('template.css');
 
 SearcherHTML::addJSFile('jquery.min.js');
 SearcherHTML::addJSFile('bootstrap.min.js');
+SearcherHTML::addJSFile('parallax.min.js');
+SearcherHTML::addJSFile('jquery-ui.min.js');
 SearcherHTML::addJSFile('site.js');

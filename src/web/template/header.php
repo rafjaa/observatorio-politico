@@ -20,6 +20,7 @@ $requestedfilename = basename($_SERVER['SCRIPT_NAME']);
 				<ul class="nav navbar-nav navbar-left">
 					<li<?php if ($requestedfilename == 'searchtags.php') echo ' class="active"'; ?>><a href="searchtags.php">Notícias</a></li>
 					<li<?php if ($requestedfilename == 'tags.php') echo ' class="active"'; ?>><a href="tags.php">Entidades</a></li>
+					<li<?php if ($requestedfilename == 'topics.php') echo ' class="active"'; ?>><a href="topics.php">Tópicos</a></li>
 				</ul>
 				<form class="navbar-form navbar-right" action="searchtags.php">
 					<div class="form-group">

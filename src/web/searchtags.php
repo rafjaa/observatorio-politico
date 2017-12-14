@@ -3,13 +3,9 @@ require(__DIR__ . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'loade
 
 SearcherHTML::setTitle('Resultados');
 
-SearcherHTML::addCSSFile('jquery-ui.min.css');
-SearcherHTML::addCSSFile('jquery-ui.theme.min.css');
 SearcherHTML::addCSSFile('ion.rangeSlider.css');
 SearcherHTML::addCSSFile('ion.rangeSlider.skinModern.css');
 
-SearcherHTML::addJSFile('parallax.min.js');
-SearcherHTML::addJSFile('jquery-ui.min.js');
 SearcherHTML::addJSFile('ion.rangeSlider.min.js');
 SearcherHTML::addJSFile('gauge.min.js');
 

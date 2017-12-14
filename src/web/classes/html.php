@@ -41,8 +41,8 @@ abstract class SearcherHTML {
 		$tags[] = '<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">';
 		$tags[] = '<title>' . self::escape(self::$_title) . '</title>';
 		$tags[] = '<meta name="viewport" content="initial-scale=1,maximum-scale=1">';
-		$tags[] = &self::getCSSTags();
-		$tags[] = &self::getJSTags();
+		$tags[] = self::getCSSTags();
+		$tags[] = self::getJSTags();
 		return implode("\n", $tags);
 	}
 

@@ -3,12 +3,6 @@ require(__DIR__ . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'loade
 
 SearcherHTML::setTitle('Entidades');
 
-SearcherHTML::addCSSFile('jquery-ui.min.css');
-SearcherHTML::addCSSFile('jquery-ui.theme.min.css');
-
-SearcherHTML::addJSFile('parallax.min.js');
-SearcherHTML::addJSFile('jquery-ui.min.js');
-
 $total = SearcherMongo::count('tags');
 
 $total = ceil($total / 10);

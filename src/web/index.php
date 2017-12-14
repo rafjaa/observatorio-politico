@@ -3,12 +3,8 @@ require(__DIR__ . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'loade
 
 SearcherHTML::setTitle('Boas-vindas');
 
-SearcherHTML::addCSSFile('jquery-ui.min.css');
-SearcherHTML::addCSSFile('jquery-ui.theme.min.css');
 SearcherHTML::addCSSFile('jqcloud.min.css');
 
-SearcherHTML::addJSFile('parallax.min.js');
-SearcherHTML::addJSFile('jquery-ui.min.js');
 SearcherHTML::addJSFile('jqcloud.min.js');
 
 $cursor = SearcherMongo::query('tags', [], ['sort' => ['freq' => -1], 'limit' => 100, 'projection' => ['_id' => 0]]);

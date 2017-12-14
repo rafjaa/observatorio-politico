@@ -76,6 +76,15 @@ max-width: 700px
 #tagcloudcontainer {
 background: rgba(25,32,9,.8)
 }
+#topicscontainer {
+background: rgba(255,255,255,.95);
+color: #111
+}
+#topicscontainer .containertitle {
+background: rgba(0,0,0,.1);
+box-shadow: none;
+color: #000
+}
 #tagcloud.format {
 margin: 30px 0;
 height: 400px
@@ -231,6 +240,40 @@ margin-bottom: 13px
 #menuheader .navbar-toggle .icon-bar {
 background: #000
 }
+
+
+#topics main{
+    margin-top: 20px;
+    margin-bottom: 20px
+}
+
+#topics .footer{
+    padding: 25px 0
+}
+
+#topics .footer div{
+    margin-bottom: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+#topics .topic{
+    margin-top: 30px
+}
+
+#topics .topic p{
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 14px;
+    margin: 0 30px;
+    padding-bottom: 10px;
+    border-bottom: solid 1px #ddd
+}
+
+#topics .topic div{
+    padding: 15px;
+}
+
 
 @media all and ( max-width: 767px ) {
 	#searchform form {
