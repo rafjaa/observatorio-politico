@@ -12,7 +12,7 @@ var faixa_topicos = {"5": [[["reforma", 2.02], ["proposta", 1.87], ["projeto", 1
 
 
 
-    function atualiza(){
+    function atualiza(mantem){
         var corrigealt = (document.documentElement.scrollHeight || document.body.scrollHeight) - (document.documentElement.scrollTop || document.body.scrollTop);
         var n_topicos = range.val();
         span_n_topicos.text(n_topicos);
@@ -72,11 +72,15 @@ var faixa_topicos = {"5": [[["reforma", 2.02], ["proposta", 1.87], ["projeto", 1
         }
 
         $('#parallax').trigger('resize.px.parallax');
-	document.documentElement.scrollTop = document.documentElement.scrollHeight - corrigealt;
-	document.body.scrollTop = document.body.scrollHeight - corrigealt
+	if (mantem) {
+		document.documentElement.scrollTop = document.documentElement.scrollHeight - corrigealt;
+		document.body.scrollTop = document.body.scrollHeight - corrigealt
+	}
     }
 
-    range.change(atualiza);
+    range.change(function(){
+	    atualiza(true)
+    });
 
     // Incia exibindo 6 tópicos
     range.val(3);

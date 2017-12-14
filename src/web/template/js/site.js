@@ -137,7 +137,15 @@ $(function(){
 			}
 			$('#newscontent').modal()
 		})
-	}
+	} else
+		// Workaround para o bug do tooltip do NV.
+		// Faz que o height da página fique maior quando
+		// sai de uma tela muito pequena para uma maior
+		// e deixa um espaço enorme vazio na parte inferior
+		// da página.
+		$(window).resize(function(){
+			$('.nvtooltip').css('transform', '')
+		});
 
 	setsearch($('#headersearch'))
 })
