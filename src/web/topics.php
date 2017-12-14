@@ -21,7 +21,7 @@ SearcherHTML::addJSFile('script.js');
 			<div id="topicscontainer">
 				<div class="containertitle">
 					<div class="container">
-						Entidades
+						Tópicos
 					</div>
 				</div>
 				<div class="container">
