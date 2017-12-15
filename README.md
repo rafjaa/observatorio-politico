@@ -7,6 +7,6 @@ Mestrado em Ciência da Computação</strong>
 <p>O presente projeto coleta notícias sobre <strong>política</strong> de diversos portais de notícia brasileiros, aplicando técnicas de <strong>mineração e visualização de dados</strong>.</p>
 
   <img src="https://raw.githubusercontent.com/rafjaa/observatorio-politico/master/src/crawler/tela_topics.png">
-  <p><code>
+  <p><pre>
   <strong>Imagem:</strong> <em>Topic modeling (NMF) aplicada às notícias coletadas para extrair os assuntos principais</em>
-  </code></p>
+  </pre></p>
